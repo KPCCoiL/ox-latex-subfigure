@@ -34,6 +34,7 @@
 
 ;;; Code:
 
+(require 'cl-lib)
 (require 'ox-latex)
 (require 'org-loaddefs)
 
@@ -143,7 +144,7 @@ LIMIT is limit."
               (while (/= open-brace 0)
                 (let ((line (thing-at-point 'line t)))
                   (kill-whole-line)
-                  (incf open-brace (brace-balance line))
+                  (cl-incf open-brace (brace-balance line))
                   (setq caption (concat caption line)))))))
          ;; table row
          ((string-match ".*\\\\\\\\$" row)
