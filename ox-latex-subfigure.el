@@ -134,12 +134,12 @@ LIMIT is limit."
          ((string-match "^\\\\caption[\\\\[{]" row)
           (setq caption row)
           (cl-flet* ((brace-score (ch)
-                                  (case ch
+                                  (cl-case ch
                                     (?\{ 1)
                                     (?\} -1)
                                     (otherwise 0)))
                      (brace-balance (str)
-                                    (reduce '+ (mapcar 'brace-score str))))
+                                    (cl-reduce '+ (mapcar 'brace-score str))))
             (let ((open-brace (brace-balance row)))
               (while (/= open-brace 0)
                 (let ((line (thing-at-point 'line t)))
