@@ -139,7 +139,7 @@ LIMIT is limit."
                                     (?\} -1)
                                     (otherwise 0)))
                      (brace-balance (str)
-                                    (cl-reduce '+ (mapcar 'brace-score str))))
+                                    (cl-reduce '+ (mapcar #'brace-score str))))
             (let ((open-brace (brace-balance row)))
               (while (/= open-brace 0)
                 (let ((line (thing-at-point 'line t)))
