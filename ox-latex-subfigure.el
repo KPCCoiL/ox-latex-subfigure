@@ -129,9 +129,22 @@ LIMIT is limit."
             (goto-char start-of-table)))
          ;; \caption{\label{tab:orgtable1}
          ;; xxx}
+         ;; The number of newlines may vary, so read until braces balance
          ((string-match "^\\\\caption[\\\\[{]" row)
-          (setq caption (concat row (thing-at-point 'line t)))
-          (kill-whole-line))
+          (setq caption row)
+          (cl-flet* ((brace-score (ch)
+                                  (case ch
+                                    (?\{ 1)
+                                    (?\} -1)
+                                    (otherwise 0)))
+                     (brace-balance (str)
+                                    (reduce '+ (mapcar 'brace-score str))))
+            (let ((open-brace (brace-balance row)))
+              (while (/= open-brace 0)
+                (let ((line (thing-at-point 'line t)))
+                  (kill-whole-line)
+                  (incf open-brace (brace-balance line))
+                  (setq caption (concat caption line)))))))
          ;; table row
          ((string-match ".*\\\\\\\\$" row)
           (let ((striped-row (replace-regexp-in-string "\\\\\\\\\n$" "" row)))
