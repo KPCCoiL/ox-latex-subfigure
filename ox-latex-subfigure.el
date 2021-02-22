@@ -167,8 +167,9 @@ LIMIT is limit."
           (setq f (match-string 1 f))
           (insert (format "\\begin{subfigure}[%s]{%s}
 %s
+%s
 \\caption{%s}
-\\end{subfigure}\n" align width f c))
+\\end{subfigure}\n" align width centering f c))
           (when (and (> limit 0)
                      (< i (1- (length fig)))
                      (= (mod (1+ i) limit) 0))
